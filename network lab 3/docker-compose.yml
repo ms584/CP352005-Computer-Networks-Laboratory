@@ -1,0 +1,77 @@
+services:
+  router:
+    image: alpine:3.20
+    container_name: lab3-router
+    privileged: true
+    networks:
+      vlan10:
+        ipv4_address: 192.168.10.1
+      vlan20:
+        ipv4_address: 192.168.20.1
+    command: >
+      sh -c "apk add --no-cache iproute2 tcpdump &&
+      sysctl -w net.ipv4.ip_forward=1 &&
+      tail -f /dev/null"
+
+  server:
+    build: .
+    container_name: lab3-server
+    cap_add: [NET_ADMIN]
+    volumes:
+      - ./automation:/app
+      - ./captures:/captures
+    networks:
+      vlan20:
+        ipv4_address: 192.168.20.20
+    command: >
+      sh -c "
+      ip route del default || true &&
+      ip route add default via 192.168.20.1 &&
+      mkdir -p /app/received &&
+      python /app/server.py --host 0.0.0.0 --port 65432 --save-dir /app/received
+      "
+
+  client:
+    build: .
+    container_name: lab3-client
+    cap_add: [NET_ADMIN]
+    volumes:
+      - ./automation:/app
+      - ./captures:/captures
+    networks:
+      vlan10:
+        ipv4_address: 192.168.10.10
+    command: >
+      sh -c "ip route del default || true &&
+      ip route add default via 192.168.10.1 &&
+      tail -f /dev/null"
+
+  sniffer:
+    build: .
+    container_name: lab3-sniffer
+    cap_add: [NET_ADMIN, NET_RAW]
+    volumes:
+      - ./captures:/captures
+    networks:
+      vlan10:
+        ipv4_address: 192.168.10.253
+      vlan20:
+        ipv4_address: 192.168.20.253
+    command: >
+      sh -c "rm -f /captures/lab3.pcap &&
+      tcpdump -i any -U -w /captures/lab3.pcap 'arp or tcp port 65432'"
+
+networks:
+  vlan10:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.254
+
+  vlan20:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+          gateway: 192.168.20.254

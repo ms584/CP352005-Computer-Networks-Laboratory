@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # 🌐 ROUTERS
+  # ==========================================
+  r1:
+    image: alpine
+    container_name: R1
+    privileged: true
+    networks:
+      internet_net:
+        ipv4_address: 10.255.0.2
+      isp_net:
+        ipv4_address: 100.10.10.1
+      lan_a_net:
+        ipv4_address: 192.168.10.1
+    command: >
+      sh -c "apk add --no-cache iproute2 iptables; sysctl -w net.ipv4.ip_forward=1;
+      IF_INET=$$(ip -o -4 addr list | grep 10.255.0.2 | awk '{print $$2}');
+      sleep 2;
+      ip route replace default via 10.255.0.1;
+      ip route replace 192.168.20.0/24 via 100.10.10.2;
+      iptables -t nat -A POSTROUTING -o $$IF_INET -j MASQUERADE;
+      tail -f /dev/null"
+
+  r2:
+    image: alpine
+    container_name: R2
+    privileged: true
+    networks:
+      isp_net:
+        ipv4_address: 100.10.10.2
+      lan_b_net:
+        ipv4_address: 192.168.20.1
+    command: >
+      sh -c "apk add --no-cache iproute2; sysctl -w net.ipv4.ip_forward=1;
+      sleep 2;
+      ip route replace default via 100.10.10.1;
+      ip route replace 192.168.10.0/24 via 100.10.10.1;
+      tail -f /dev/null"
+
+  # ==========================================
+  # 💻 SERVERS & CLIENTS
+  # ==========================================
+  
+  client_a:
+    image: python:3.10-alpine
+    container_name: ClientA
+    cap_add: [NET_ADMIN]
+    networks:
+      lan_a_net:
+        ipv4_address: 192.168.10.50
+    command: >
+      sh -c "apk add --no-cache iproute2 curl && 
+      ip route del default && ip route add default via 192.168.10.1 && 
+      tail -f /dev/null"
+
+  server_a:
+    image: python:3.10-alpine
+    container_name: ServerA
+    cap_add: [NET_ADMIN]
+    volumes:
+      - ./automation:/automation  # Mount ไฟล์ Python เข้าไป
+    networks:
+      lan_a_net:
+        ipv4_address: 192.168.10.10
+    command: >
+      sh -c "apk add --no-cache iproute2 curl && 
+      ip route del default && ip route add default via 192.168.10.1 && 
+      tail -f /dev/null"
+
+  server_b:
+    image: python:3.10-alpine
+    container_name: ServerB
+    cap_add: [NET_ADMIN]
+    volumes:
+      - ./automation:/automation  # Mount ไฟล์ Python เข้าไป
+    networks:
+      lan_b_net:
+        ipv4_address: 192.168.20.10
+    command: >
+      sh -c "apk add --no-cache iproute2 curl && 
+      ip route del default && ip route add default via 192.168.20.1 && 
+      tail -f /dev/null"
+
+# ==========================================
+# 🔌 NETWORKS
+# ==========================================
+networks:
+  internet_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.255.0.0/24
+          gateway: 10.255.0.1
+  isp_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 100.10.10.0/29
+          gateway: 100.10.10.6
+  lan_a_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.254
+  lan_b_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+          gateway: 192.168.20.254
