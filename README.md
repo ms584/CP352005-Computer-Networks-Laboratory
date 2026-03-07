@@ -2,6 +2,8 @@
 
 This repository contains laboratory exercises for the **Computer Networks** course. Each lab simulates real-world network infrastructure using **Docker containers** to emulate routers, servers, and clients in a controlled environment.
 
+Google Drive Link: [CP352005 Network Lab](https://drive.google.com/drive/folders/1h4wsl5imC_2uLLio0ZDTWANK40NS1YOD?usp=sharing)
+
 ## 🚀 Key Concepts Covered
 * **Network Segmentation:** Creating isolated VLANs and subnets.
 * **Routing:** Configuring static routes and inter-VLAN communication.
