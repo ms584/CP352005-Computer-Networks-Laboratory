@@ -1,24 +1,37 @@
 Academic Use License
 
-Copyright (c) 2026 [673380416-3 นายพัทธดนย์ คำนัน โบร์ท, 673380428-6 นายสิทธิโชค มุขนาค บูบู้, 673380583-4 นายณัฐภัทร ฉ่ำตะคุ อ้น, 673380606-8 นายสรวิศ สุคงเจริญ โอ่ง, 673380608-4 นางสาวอมลวรรณ พิมพิชัย เนย]
+Computer Networks Laboratory
+Course: CP352005 Networks
+Institution: Khon Kaen University
 
-This repository contains laboratory work for the Computer Networks course.
+Copyright (c) 2026
 
-Permission is granted to view and study the contents of this repository for
-educational purposes only.
+Authors:
+673380416-3 นายพัทธดนย์ คำนัน (โบร์ท)
+673380428-6 นายสิทธิโชค มุขนาค (บูบู้)
+673380583-4 นายณัฐภัทร ฉ่ำตะคุ (อ้น)
+673380606-8 นายสรวิศ สุคงเจริญ (โอ่ง)
+673380608-4 นางสาวอมลวรรณ พิมพิชัย (เนย)
+
+This repository contains laboratory assignments for the course
+CP352005 Computer Networks at Khon Kaen University.
+
+Permission is granted to view, study, and reference the contents of this
+repository for educational purposes only.
 
 The following actions are strictly prohibited:
 
 1. Copying or submitting this work as your own academic assignment.
-2. Redistributing the code or lab solutions for academic submission.
-3. Using this repository to bypass academic integrity policies.
+2. Redistributing the code or laboratory solutions for academic submission.
+3. Using this repository to bypass academic integrity policies of any institution.
 
-Students are allowed to reference this repository for learning purposes,
+Students may use this repository as a reference for learning purposes only,
 but must implement their own solutions independently.
 
-If you are a student taking this course, you must not submit this work,
-or any modified version of it, as your own.
+If you are currently enrolled in the CP352005 Computer Networks course,
+you must not submit this work, or any modified version of it, as your own assignment.
 
-Violation of this license may constitute academic misconduct.
+Any violation of this license may be considered academic misconduct
+according to university academic integrity policies.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
