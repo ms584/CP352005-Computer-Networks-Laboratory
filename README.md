@@ -134,11 +134,14 @@ Department of Computer Science
 
 ## 📖 Academic Integrity Notice
 
-This repository is provided for **learning and reference only**.
+This repository is created for the course:
 
-Students taking the Computer Networks course must **not copy or submit
-this work as their own assignment**.
+CP352005 Computer Networks  
+Khon Kaen University
 
-Doing so may violate academic integrity policies.
+The materials in this repository are provided for **learning and reference only**.
+
+Students must not copy, redistribute, or submit this work as their own
+academic assignment.
 
 ---
