@@ -1,0 +1,134 @@
+services:
+  r1:
+    build: ./router
+    container_name: R1
+    privileged: true
+    volumes:
+      - ./router/r1/frr.conf:/etc/frr/frr.conf
+      - ./router/r1/start.sh:/start.sh
+      - ./router/r1/wan_monitor.sh:/wan_monitor.sh
+    networks:
+      internet_net:
+        ipv4_address: 10.255.0.2
+      isp_net:
+        ipv4_address: 100.10.10.1
+      lan_a_net:
+        ipv4_address: 192.168.10.1
+    command: ["/bin/sh", "/start.sh"]
+
+  r2:
+    build: ./router
+    container_name: R2
+    privileged: true
+    volumes:
+      - ./router/r2/frr.conf:/etc/frr/frr.conf
+      - ./router/r2/start.sh:/start.sh
+    networks:
+      isp_net:
+        ipv4_address: 100.10.10.2
+      lan_b_net:
+        ipv4_address: 192.168.20.1
+    command: ["/bin/sh", "/start.sh"]
+
+  client_a:
+    image: python:3.10-alpine
+    container_name: ClientA
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan_a_net:
+        ipv4_address: 192.168.10.50
+    command: >
+      sh -c "apk add --no-cache iproute2 curl &&
+      ip route del default || true &&
+      ip route add default via 192.168.10.1 &&
+      tail -f /dev/null"
+
+  client_b:
+    image: python:3.10-alpine
+    container_name: ClientB
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan_b_net:
+        ipv4_address: 192.168.20.50
+    command: >
+      sh -c "apk add --no-cache iproute2 curl &&
+      ip route del default || true &&
+      ip route add default via 192.168.20.1 &&
+      tail -f /dev/null"
+
+  server_a:
+    image: python:3.10-alpine
+    container_name: ServerA
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./automation:/automation
+    networks:
+      lan_a_net:
+        ipv4_address: 192.168.10.10
+    command: >
+      sh -c "apk add --no-cache iproute2 curl &&
+      ip route del default || true &&
+      ip route add default via 192.168.10.1 &&
+      python /automation/start_services.py"
+
+  server_b:
+    image: python:3.10-alpine
+    container_name: ServerB
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./automation:/automation
+    networks:
+      lan_b_net:
+        ipv4_address: 192.168.20.10
+    command: >
+      sh -c "apk add --no-cache iproute2 curl &&
+      ip route del default || true &&
+      ip route add default via 192.168.20.1 &&
+      python /automation/start_services.py"
+
+  internet_tester:
+    image: python:3.10-alpine
+    container_name: InternetTester
+    cap_add:
+      - NET_ADMIN
+    networks:
+      internet_net:
+        ipv4_address: 10.255.0.10
+    command: >
+      sh -c "apk add --no-cache iproute2 curl &&
+      ip route del default || true &&
+      ip route add default via 10.255.0.1 &&
+      tail -f /dev/null"
+
+networks:
+  internet_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.255.0.0/24
+          gateway: 10.255.0.1
+
+  isp_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 100.10.10.0/29
+          gateway: 100.10.10.6
+
+  lan_a_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.254
+
+  lan_b_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
+          gateway: 192.168.20.254

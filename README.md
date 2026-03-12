@@ -19,22 +19,37 @@ Google Drive Link: [CP352005 Network Lab](https://drive.google.com/drive/folders
 ```text
 .
 ├── network lab 3/           # Packet Capture & MIME Transfer
-│   ├── automation/
-│   ├── captures/
-│   ├── docker-compose.yml
-│   ├── Dockerfile
-│   └── README.md
+│   ├── automation/          # Scripts for file transfer testing
+│   ├── captures/            # .pcap files from packet capturing sessions
+│   ├── docker-compose.yml   # Network container configurations
+│   ├── Dockerfile           # Images for hosts and clients
+│   └── README.md            # Lab 3 specific documentation
 │
 ├── network lab 4/           # NAT & Stateless/Stateful APIs
-│   ├── automation/
-│   ├── docker-compose.yml
-│   └── README.md
+│   ├── automation/          # API Testing scripts
+│   ├── docker-compose.yml   # NAT network topology simulation
+│   └── README.md            # Lab 4 specific documentation
 │
-├── network lab 5/           # Enterprise Edge & WAN Microservices
+├── network lab 5/           # Enterprise Edge & WAN Microservices (Part 1)
 │   ├── automation/
-│   │   └── start_services.py
-│   ├── docker-compose.yml
-│   └── README.md
+│   │   └── start_services.py # Microservices orchestration
+│   ├── docker-compose.yml   # Multi-segment network topology
+│   └── README.md            # Lab 5 specific documentation
+│
+├── network lab 6/           # Resilient WAN & Secure Microservice Exposure
+│   ├── automation/
+│   │   └── start_services.py # Service deployment scripts
+│   ├── router/              # Router configurations (FRRouting)
+│   │   ├── Dockerfile       # Image for router containers
+│   │   ├── r1/              # Edge Router (NAT, Firewall, WAN Monitor)
+│   │   │   ├── frr.conf
+│   │   │   ├── start.sh
+│   │   │   └── wan_monitor.sh
+│   │   └── r2/              # Internal Router (Inter-VLAN Routing)
+│   │       ├── frr.conf
+│   │       └── start.sh
+│   ├── docker-compose.yml   # Full-scale edge architecture setup
+│   └── README.md            # Lab 6 specific documentation
 │
 └── README.md                # Main Documentation
 ```
@@ -66,6 +81,13 @@ A complex enterprise-level simulation involving distributed services.
     | **8002** | AI Service | Inference/AI simulation |
     | **9000** | Gateway Service | API Orchestration |
 
+### 🔹 Lab 6 — Resilient WAN + Secure Microservice Exposure
+
+Enhances the enterprise edge network with resilience and security controls.
+
+- **Concepts:** Dynamic routing (OSPF), WAN health monitoring, firewall ACL policies, controlled service exposure.
+- **Security:** Only approved public services are reachable from the Internet while backend microservices remain protected.
+- **Architecture:** Internet → Edge Router (NAT + Firewall) → ISP WAN → Internal Router → LAN Microservices
 ---
 
 ## 🛠 Requirements
@@ -132,16 +154,17 @@ Department of Computer Science
 
 ---
 
-## 📖 Academic Integrity Notice
+## 📘 Academic Integrity Notice
 
-This repository is created for the course:
+This repository contains laboratory work developed for the course:
 
-CP352005 Computer Networks  
+**CP352005 — Computer Networks**  
 Khon Kaen University
 
-The materials in this repository are provided for **learning and reference only**.
+The content is published **solely for educational reference and learning purposes**.
 
-Students must not copy, redistribute, or submit this work as their own
-academic assignment.
+Students enrolled in this course are **strictly prohibited** from copying, reproducing, redistributing, or submitting this work as their own academic assignment.
+
+Any misuse of this material may constitute **academic misconduct** under university policies.
 
 ---

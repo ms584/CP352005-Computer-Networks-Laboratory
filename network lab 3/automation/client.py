@@ -1,6 +1,6 @@
 """
 CP352005 Computer Networks Laboratory
-Lab 3 
+Network Lab 3: MIME File Transfer over Router-on-a-Stick
 Author: นายพัทธดนย์ คำนัน โบร์ท
 Student ID: 673380416-3
 Author: นายสิทธิโชค มุขนาค บูบู้ 
