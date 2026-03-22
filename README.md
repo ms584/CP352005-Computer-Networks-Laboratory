@@ -150,21 +150,19 @@ Upon completion of these labs, you will understand:
 673380608-4 นางสาวอมลวรรณ พิมพิชัย เนย
 
 **Computer Networks Laboratory**  
-Department of Computer Science
+College of Computing, Khon Kaen University
 
 ---
 
-## 📘 Academic Integrity Notice
+## � License
 
-This repository contains laboratory work developed for the course:
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-**CP352005 — Computer Networks**  
-Khon Kaen University
+You are free to:
+- ✅ Use this software for any purpose
+- ✅ Copy, modify, and distribute it
+- ✅ Use it in private or commercial projects
 
-The content is published **solely for educational reference and learning purposes**.
-
-Students enrolled in this course are **strictly prohibited** from copying, reproducing, redistributing, or submitting this work as their own academic assignment.
-
-Any misuse of this material may constitute **academic misconduct** under university policies.
+Simply include the original copyright notice and license when distributing.
 
 ---
